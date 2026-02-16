@@ -26,6 +26,18 @@
       WP_DB_PASSWORD={{ wp_db_password }}
       WP_DB_ROOT_PASSWORD={{ wp_db_root_password }}
 
+- name: Create php config directory
+  ansible.builtin.file:
+    path: "{{ project_dir }}/php"
+    state: directory
+    mode: "0755"
+
+- name: Copy custom php ini
+  ansible.builtin.copy:
+    src: "../../../deploy/php/custom.ini"
+    dest: "{{ project_dir }}/php/custom.ini"
+    mode: "0644"
+
 - name: Deploy stack with docker compose
   ansible.builtin.command:
     chdir: "{{ project_dir }}"
