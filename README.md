@@ -8,10 +8,10 @@
 DevOps WordPress Showcase – Level 1
 Overview
 This project demonstrates a reproducible DevOps deployment of:
-    • Proxmox VM
-    • Docker Engine
-    • Caddy reverse proxy (automatic TLS)
-    • WordPress + MariaDB
+- Proxmox VM
+- Docker Engine
+- Caddy reverse proxy (automatic TLS)
+- WordPress + MariaDB
 Deployment is fully automated using Ansible.
 
 Architecture
@@ -60,42 +60,42 @@ From vm-ansible:
 cd ansible
 ansible-playbook playbooks/level1.yml
 This playbook:
-    1. Configures base system (timezone, firewall)
-    2. Installs Docker
-    3. Deploys Docker Compose stack
-    4. Generates Caddy configuration
-    5. Starts WordPress in HTTPS
+1. Configures base system (timezone, firewall)
+2. Installs Docker
+3. Deploys Docker Compose stack
+4. Generates Caddy configuration
+5. Starts WordPress in HTTPS
 
 Domain configuration
 DNS configuration:
 YOURDOMAIN.tech → Public IP (VPS)
 Ports required:
-    • 80/tcp
-    • 443/tcp
+- 80/tcp
+- 443/tcp
 Firewall rules on vm-prod allow:
-    • SSH (22)
-    • HTTP (80)
-    • HTTPS (443)
+- SSH (22)
+- HTTP (80)
+- HTTPS (443)
 
 Services
 Caddy
-    • Automatic HTTPS (Let's Encrypt)
-    • HTTP → HTTPS redirection
-    • Gzip enabled
+- Automatic HTTPS (Let's Encrypt)
+- HTTP → HTTPS redirection
+- Gzip enabled
 WordPress
-    • Running in container
-    • Persistent volume for:
-        ◦ /var/www/html
+- Running in container
+- Persistent volume for:
+ - /var/www/html
 MariaDB
-    • Persistent volume
-    • Credentials managed via environment file
+- Persistent volume
+- Credentials managed via environment file
 
 Persistent data
 Docker volumes:
-    • wp_data
-    • db_data
-    • caddy_data
-    • caddy_config
+- wp_data
+- db_data
+- caddy_data
+- caddy_config
 To inspect:
 docker volume ls
 
