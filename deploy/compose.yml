@@ -38,6 +38,7 @@ services:
       WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD}
     volumes:
       - wp_data:/var/www/html
+      - ./php/custom.ini:/usr/local/etc/php/conf.d/zz-custom.ini:ro
     networks:
       - front
       - back
