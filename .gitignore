@@ -1,0 +1,14 @@
+# Secrets / env
+deploy/env/*.env
+deploy/env/*.env.*
+ansible/**/*.vault
+
+# Ansible local
+*.retry
+ansible/.cache/
+ansible/tmp/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
