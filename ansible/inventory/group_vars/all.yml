@@ -15,4 +15,3 @@ wp_db_user: wpuser
 wp_db_password: "CHANGE_ME_STRONG"
 wp_db_root_password: "CHANGE_ME_ROOT_STRONG"
 
-site_domain: lavallee.tech
