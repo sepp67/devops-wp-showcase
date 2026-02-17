@@ -12,6 +12,7 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
       - caddy_config:/config
+      - ./logs:/var/log/caddy
 
   db:
     image: mariadb:11

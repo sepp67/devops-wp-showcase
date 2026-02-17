@@ -16,6 +16,12 @@
     dest: "{{ project_dir }}/Caddyfile"
     mode: "0644"
 
+- name: Create logs directory for Caddy
+  ansible.builtin.file:
+    path: "{{ project_dir }}/logs"
+    state: directory
+    mode: "0755"
+
 - name: Create WordPress env file
   ansible.builtin.copy:
     dest: "{{ project_dir }}/wordpress.env"
