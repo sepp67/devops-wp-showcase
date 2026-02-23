@@ -12,3 +12,6 @@ ansible/tmp/
 .DS_Store
 .idea/
 .vscode/
+
+ansible/inventory/group_vars/all.yml
+deploy/env/wordpress.env
