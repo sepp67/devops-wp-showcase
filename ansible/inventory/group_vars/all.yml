@@ -1,17 +1,15 @@
-project_name: devops-wp-showcase
-project_dir: /opt/devops-wp-showcase
-
 timezone: Europe/Paris
-ssh_port: 22
 firewall_enabled: true
+ssh_port: 22
 
-# Caddy / site
+# dirs
+proxy_dir: /opt/devops-proxy
+wp_dir: /opt/devops-wp
+
 caddy_email: admin@lavallee.tech
-site_domain: lavallee.tech
 
-# DB creds (pour Niveau 1: simple env file non versionné)
-wp_db_name: wordpress
-wp_db_user: wpuser
-wp_db_password: "CHANGE_ME_STRONG"
-wp_db_root_password: "CHANGE_ME_ROOT_STRONG"
-
+sites:
+  - name: lavallee
+    domain: lavallee.tech
+    backend_host: 10.0.0.13
+    backend_port: 8080
