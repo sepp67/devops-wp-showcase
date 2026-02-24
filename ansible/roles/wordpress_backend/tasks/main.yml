@@ -55,6 +55,12 @@
     proto: tcp
   when: firewall_enabled
 
+- name: Ensure custom.ini is a file (not a directory)
+  ansible.builtin.file:
+    path: "{{ wp_dir }}/{{ site.name }}/php/custom.ini"
+    state: file
+    mode: "0644"
+
 - name: Start/Update backend stack
   ansible.builtin.command:
     chdir: "{{ wp_dir }}/{{ site.name }}"
