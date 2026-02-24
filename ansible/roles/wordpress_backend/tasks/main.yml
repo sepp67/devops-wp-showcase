@@ -49,3 +49,15 @@
     chdir: "{{ wp_dir }}/{{ site.name }}"
     cmd: docker compose up -d --force-recreate
   changed_when: true
+
+- name: Create php config directory
+  ansible.builtin.file:
+    path: "{{ wp_dir }}/{{ site.name }}/php"
+    state: directory
+    mode: "0755"
+
+- name: Copy custom php ini
+  ansible.builtin.copy:
+    src: "../../../deploy/php/custom.ini"
+    dest: "{{ wp_dir }}/{{ site.name }}/php/custom.ini"
+    mode: "0644"

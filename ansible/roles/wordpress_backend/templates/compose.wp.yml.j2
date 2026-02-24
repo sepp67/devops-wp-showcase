@@ -24,6 +24,7 @@ services:
       - "{{ bind_ip }}:{{ site.backend_port }}:80"
     volumes:
       - wp_data:/var/www/html
+      - ./php/custom.ini:/usr/local/etc/php/conf.d/zz-custom.ini:ro
     depends_on:
       - db
 
