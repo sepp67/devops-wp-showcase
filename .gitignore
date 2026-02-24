@@ -13,5 +13,5 @@ ansible/tmp/
 .idea/
 .vscode/
 
-ansible/inventory/group_vars/all.yml
-deploy/env/wordpress.env
+#ansible/inventory/group_vars/all.yml 
+les_vars/*

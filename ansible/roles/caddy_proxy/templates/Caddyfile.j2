@@ -1,0 +1,20 @@
+{
+  email {{ caddy_email }}
+}
+
+{% for s in sites %}
+{{ s.domain }} {
+  encode gzip
+
+  log {
+    output file /var/log/caddy/{{ s.name }}.access.log {
+      roll_size 10MiB
+      roll_keep 10
+      roll_keep_for 720h
+    }
+    format console
+  }
+
+  reverse_proxy http://{{ s.backend_host }}:{{ s.backend_port }}
+}
+{% endfor %}

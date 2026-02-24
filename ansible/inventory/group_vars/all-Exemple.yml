@@ -2,7 +2,7 @@ project_name: devops-wp-showcase
 project_dir: /opt/devops-wp-showcase
 
 timezone: Europe/Paris
-ssh_port: 22
+ssh_port: 22 # this is the standart port
 firewall_enabled: true
 
 # Caddy / site
