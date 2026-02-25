@@ -16,14 +16,14 @@
 
 - name: Create php config directory
   ansible.builtin.file:
-    path: "{{ wp_dir }}/{{ site.name }}/php"
+    path: "{{ project_dir }}/php"
     state: directory
     mode: "0755"
 
 - name: Copy custom php ini
   ansible.builtin.copy:
     src: "../../../deploy/php/custom.ini"
-    dest: "{{ wp_dir }}/{{ site.name }}/php/custom.ini"
+    dest: "{{ project_dir }}/php/custom.ini"
     mode: "0644"
 
 - name: Deploy backend compose.yml
@@ -41,6 +41,7 @@
     from_ip: "{{ proxy_ip }}"
   when: firewall_enabled
 
+# Optionnel mais recommandé: refuser 80/443 (pas besoin sur backend)
 - name: Deny HTTP on backend
   ansible.builtin.ufw:
     rule: deny
@@ -54,12 +55,6 @@
     port: "443"
     proto: tcp
   when: firewall_enabled
-
-- name: Ensure custom.ini is a file (not a directory)
-  ansible.builtin.file:
-    path: "{{ wp_dir }}/{{ site.name }}/php/custom.ini"
-    state: file
-    mode: "0644"
 
 - name: Start/Update backend stack
   ansible.builtin.command:
