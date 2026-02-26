@@ -3,7 +3,7 @@
 }
 
 {% for s in sites %}
-{{ s.domain }} {
+{{ s.domain }}, www.{{ s.domain }} {
   encode gzip
 
   log {
