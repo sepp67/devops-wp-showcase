@@ -24,6 +24,11 @@
     state: directory
     mode: "0755"
 
+- name: Remove custom.ini if it is a directory (fix previous bad state)
+  ansible.builtin.file:
+    path: "{{ site_dir }}/php/custom.ini"
+    state: absent
+
 - name: Copy custom php ini
   ansible.builtin.copy:
     src: "../../../deploy/php/custom.ini"
