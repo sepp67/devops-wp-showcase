@@ -15,6 +15,11 @@
     format console
   }
 
-  reverse_proxy http://{{ s.backend_host }}:{{ s.backend_port }}
+  reverse_proxy {{ s.backend_host }}:{{ s.backend_port }} {
+    header_up Host {host}
+    header_up X-Real-IP {remote_host}
+    header_up X-Forwarded-For {remote_host}
+    header_up X-Forwarded-Proto {scheme}
+  }
 }
 {% endfor %}
