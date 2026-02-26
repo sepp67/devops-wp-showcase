@@ -1,0 +1,5 @@
+- name: Render hardened Caddyfile
+  template:
+    src: Caddyfile.hardened.j2
+    dest: "{{ project_dir }}/Caddyfile"
+  notify: reload caddy

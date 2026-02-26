@@ -1,0 +1,4 @@
+- import_tasks: fail2ban.yml
+  when: hardening_proxy_fail2ban_enabled
+
+- import_tasks: caddy.yml

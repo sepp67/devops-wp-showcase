@@ -12,7 +12,7 @@
       roll_keep 10
       roll_keep_for 720h
     }
-    format console
+    format json
   }
 
   reverse_proxy {{ s.backend_host }}:{{ s.backend_port }} {

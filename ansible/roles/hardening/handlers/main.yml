@@ -1,0 +1,9 @@
+- name: restart fail2ban
+  systemd:
+    name: fail2ban
+    state: restarted
+
+- name: reload caddy
+  systemd:
+    name: caddy
+    state: reloaded
