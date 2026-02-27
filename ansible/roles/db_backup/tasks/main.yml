@@ -4,6 +4,11 @@
     state: directory
     mode: "0700"
 
+- name: Build per-host secret dict from global secrets using site_name
+  ansible.builtin.set_fact:
+    secret: "{{ sites_secrets[site_name] }}"
+  when: db_backup_enabled
+
 - name: Deploy DB backup script
   ansible.builtin.template:
     src: backup.sh.j2
