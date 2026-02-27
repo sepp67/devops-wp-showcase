@@ -9,6 +9,29 @@
     secret: "{{ sites_secrets[site_name] }}"
   when: db_backup_enabled
 
+- name: Ensure NFS client packages are installed
+  ansible.builtin.apt:
+    name: nfs-common
+    state: present
+    update_cache: true
+  when: db_backup_enabled and db_backup_nfs_enabled
+
+- name: Ensure NFS mountpoint exists
+  ansible.builtin.file:
+    path: "{{ db_backup_nfs_mountpoint }}"
+    state: directory
+    mode: "0755"
+  when: db_backup_enabled and db_backup_nfs_enabled
+
+- name: Mount Synology NFS export persistently
+  ansible.posix.mount:
+    path: "{{ db_backup_nfs_mountpoint }}"
+    src: "{{ db_backup_nfs_server }}:{{ db_backup_nfs_export }}"
+    fstype: nfs
+    opts: "rw,nofail,_netdev,timeo=14"
+    state: mounted
+  when: db_backup_enabled and db_backup_nfs_enabled
+
 - name: Deploy DB backup script
   ansible.builtin.template:
     src: backup_db.sh.j2
