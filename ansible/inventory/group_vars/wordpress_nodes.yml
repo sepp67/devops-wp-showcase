@@ -1,0 +1,20 @@
+# inventory/group_vars/wordpress_nodes.yml
+
+db_backup_enabled: true
+
+# Dump local
+db_backup_dir: /opt/backups/mysql
+db_backup_retention_days: 14
+
+# Cron
+db_backup_cron_hour: "2"
+db_backup_cron_minute: "30"
+
+# --- NAS Synology ---
+db_backup_rsync_enabled: true
+db_backup_nas_host: "192.168.1.43"
+db_backup_nas_user: "sebik"
+db_backup_nas_dir: "/volume1/backup_db"
+
+# Clé SSH utilisée depuis la VM WordPress vers le NAS
+db_backup_nas_ssh_key: "/home/devops/.ssh/id_ed25519"
