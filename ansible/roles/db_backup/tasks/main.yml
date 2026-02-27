@@ -15,6 +15,15 @@
     dest: "{{ db_backup_dir }}/backup_db.sh"
     mode: "0700"
 
+- name: Ensure required packages are installed (rsync + ssh client)
+  ansible.builtin.apt:
+    name:
+      - rsync
+      - openssh-client
+    state: present
+    update_cache: true
+  when: db_backup_enabled
+
 - name: Ensure cron is installed (provides crontab)
   ansible.builtin.apt:
     name: cron

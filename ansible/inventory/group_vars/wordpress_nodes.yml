@@ -13,7 +13,7 @@ db_backup_cron_minute: "30"
 # --- NAS Synology ---
 db_backup_rsync_enabled: true
 db_backup_nas_host: "192.168.1.43"
-db_backup_nas_user: "sebik"
+db_backup_nas_user: "backup"
 db_backup_nas_dir: "/volume1/backup_db"
 
 # Clé SSH utilisée depuis la VM WordPress vers le NAS
