@@ -61,9 +61,9 @@
     state: started
   when: db_backup_enabled
 
-- name: Install cron job
+- name: Install cron job (20h–22h, every 15 minutes)
   ansible.builtin.cron:
-    name: "WordPress DB backup (dump + rsync)"
-    minute: "{{ db_backup_cron_minute }}"
-    hour: "{{ db_backup_cron_hour }}"
+    name: "WordPress DB backup (window 20-22)"
+    minute: "*/15"
+    hour: "20-21"
     job: "/bin/bash {{ db_backup_dir }}/backup_db.sh"

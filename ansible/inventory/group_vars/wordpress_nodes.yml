@@ -7,7 +7,7 @@ db_backup_dir: /opt/backups/mysql
 db_backup_retention_days: 14
 
 # Cron
-db_backup_cron_hour: "2"
+db_backup_cron_hour: "20"
 db_backup_cron_minute: "30"
 
 # NFS Synology

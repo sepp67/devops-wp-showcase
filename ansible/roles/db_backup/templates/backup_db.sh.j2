@@ -12,6 +12,15 @@ DB_PASS="{{ secret.wp_db_password }}"
 DB_CONTAINER="${SITE}_db"
 OUT="${BACKUP_DIR}/${SITE}_${TS}.sql.gz"
 
+TODAY="$(date +%F)"
+TODAY_PATTERN="${BACKUP_DIR}/${SITE}_${TODAY}_*.sql.gz"
+
+# If a backup for today already exists, exit cleanly
+if compgen -G "${TODAY_PATTERN}" > /dev/null; then
+  echo "Backup for today already exists. Exiting."
+  exit 0
+fi
+
 mkdir -p "${BACKUP_DIR}"
 chmod 700 "${BACKUP_DIR}"
 
