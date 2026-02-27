@@ -6,6 +6,7 @@ ssh_port: 22
 proxy_dir: /opt/devops-proxy
 wp_dir: /opt/devops-wp
 
+caddyfile_path: "{{ proxy_dir }}/Caddyfile"
 caddy_email: admin@lavallee.tech
 
 sites:
