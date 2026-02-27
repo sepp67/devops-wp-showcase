@@ -11,8 +11,8 @@
 
 - name: Deploy DB backup script
   ansible.builtin.template:
-    src: backup.sh.j2
-    dest: "{{ db_backup_dir }}/backup.sh"
+    src: backup_db.sh.j2
+    dest: "{{ db_backup_dir }}/backup_db.sh"
     mode: "0700"
 
 - name: Ensure cron is installed (provides crontab)
@@ -31,8 +31,7 @@
 
 - name: Install cron job
   ansible.builtin.cron:
-    name: "WordPress DB backup"
-    minute: "{{ db_backup_time_minute }}"
-    hour: "{{ db_backup_time_hour }}"
-    job: "{{ db_backup_dir }}/backup.sh"
-  when: db_backup_enabled
+    name: "WordPress DB backup (dump + rsync)"
+    minute: "{{ db_backup_cron_minute }}"
+    hour: "{{ db_backup_cron_hour }}"
+    job: "/bin/bash {{ db_backup_dir }}/backup_db.sh"

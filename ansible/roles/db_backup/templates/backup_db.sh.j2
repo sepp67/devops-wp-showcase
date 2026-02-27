@@ -3,13 +3,11 @@ set -euo pipefail
 
 SITE="{{ site_name }}"
 BACKUP_DIR="{{ db_backup_dir }}"
-DATE="$(date +%F)"
 TS="$(date +%F_%H%M%S)"
 
-# Secrets par site (depuis vault.yml)
-DB_NAME="{{ secrets[site_name].wp_db_name }}"
-DB_USER="{{ secrets[site_name].wp_db_user }}"
-DB_PASS="{{ secrets[site_name].wp_db_password }}"
+DB_NAME="{{ secret.wp_db_name }}"
+DB_USER="{{ secret.wp_db_user }}"
+DB_PASS="{{ secret.wp_db_password }}"
 
 DB_CONTAINER="${SITE}_db"
 OUT="${BACKUP_DIR}/${SITE}_${TS}.sql.gz"
@@ -17,14 +15,20 @@ OUT="${BACKUP_DIR}/${SITE}_${TS}.sql.gz"
 mkdir -p "${BACKUP_DIR}"
 chmod 700 "${BACKUP_DIR}"
 
-# Dump depuis le container MariaDB
+# Vérif container présent (sinon on sort en erreur)
+if ! docker ps --format '{{"{{"}}.Names{{"}}"}}' | grep -qx "${DB_CONTAINER}"; then
+  echo "ERROR: DB container not running: ${DB_CONTAINER}" >&2
+  exit 1
+fi
+
+# Dump depuis le container
 docker exec "${DB_CONTAINER}" mariadb-dump -u"${DB_USER}" -p"${DB_PASS}" "${DB_NAME}" \
   | gzip > "${OUT}"
 
-# Rotation locale (supprime les dumps plus vieux que N jours)
+# Rotation locale
 find "${BACKUP_DIR}" -type f -name "${SITE}_*.sql.gz" -mtime +{{ db_backup_retention_days }} -delete
 
-# Rsync vers NAS (si activé)
+# Rsync vers NAS
 {% if db_backup_rsync_enabled %}
 RSYNC_SSH="ssh -i {{ db_backup_nas_ssh_key }} -o StrictHostKeyChecking=accept-new"
 rsync -az --chmod=F600 --rsh="${RSYNC_SSH}" "${OUT}" "{{ db_backup_nas_user }}@{{ db_backup_nas_host }}:{{ db_backup_nas_dir }}/"
