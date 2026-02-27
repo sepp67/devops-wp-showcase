@@ -26,7 +26,7 @@ A complete WordPress stack deployed on a single VM:
 Architecture:
 Internet → VPS Public IP → WireGuard Tunnel → VM → Caddy → WordPress
 
-How to deploy:
+### How to deploy:
 cd ansible
 ansible-playbook -i inventory/production.ini playbooks/level1.yml
 
@@ -34,74 +34,63 @@ ansible-playbook -i inventory/production.ini playbooks/level1.yml
 
 Tag: v2.0-level2
 
-A production-like split architecture:
+- A production-like split architecture:
 
-    Proxy VM (Caddy entrypoint)
+- Proxy VM (Caddy entrypoint)
 
-    Dedicated WordPress backend VMs
+- Dedicated WordPress backend VMs
 
-    Firewall segmentation (proxy → backend only)
+- Firewall segmentation (proxy → backend only)
 
-    Per-site logging & PHP tuning via Ansible
+- Per-site logging & PHP tuning via Ansible
 
 Architecture:
 Level 2 – Dedicated Proxy + Multiple Backends
-Internet
-   ↓
-VPS Public IP
-   ↓
-WireGuard
-   ↓
-Proxy VM (Caddy)
-   ↓
-WordPress Backend VM(s)
+- Internet
+   
+- VPS Public IP
+   
+- WireGuard
+   
+- Proxy VM (Caddy)
+   
+- WordPress Backend VM(s)
 
-How to deploy
+### How to deploy
 cd ansible
 ansible-playbook -i inventory/production.ini playbooks/level2.yml
 
-### Roadmap – Level 3
+## Roadmap – Level 3
 
 Planned improvements:
 
-Ansible Vault for secrets
+- Ansible Vault for secrets
 
-Automated backups + restore validation
+- Automated backups + restore validation
 
-CI pipeline (ansible-lint, yamllint)
+- CI pipeline (ansible-lint, yamllint)
 
-Monitoring stack (Prometheus/Grafana)
+- Monitoring stack (Prometheus/Grafana)
 
-Terraform provisioning for Proxmox
+- Terraform provisioning for Proxmox
 
-Centralized logging
+- Centralized logging
 
 ## Documentation
 
 Detailed technical documentation is available in the /docs directory:
 
-Architecture & Networking
-
-Ansible structure & roles
-
-Inventory & configuration model
-
-Operations & maintenance
-
-Security & hardening strategy
-
-Roadmap evolution
 
 ## Objective
 
 This project demonstrates:
 
-Infrastructure evolution from simple to segmented architecture
+- Infrastructure evolution from simple to segmented architecture
 
-Idempotent automation with Ansible
+- Idempotent automation with Ansible
 
-Network segmentation & security mindset
+- Network segmentation & security mindset
 
-Platform-oriented DevOps thinking
+- Platform-oriented DevOps thinking
 
 It is designed as a technical showcase and learning platform.
