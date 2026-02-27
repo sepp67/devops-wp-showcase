@@ -1,156 +1,107 @@
-## Project Evolution
+# DevOps WordPress Platform (Proxmox + Ansible + Docker + Caddy)
 
-- **Level 1 (v1.0-level1)**: Single VM deployment (Caddy + WordPress + MariaDB)
-- **Level 2 (planned)**: Dedicated proxy VM + multiple WordPress backend VMs
-- **Level 3 (planned)**: Vault, backups/restore, CI, monitoring, IaC (Terraform Proxmox)
+A reproducible Infrastructure-as-Code showcase demonstrating how to build and evolve a WordPress platform using:
 
+- Proxmox virtual machines
+- Ansible provisioning
+- Docker Compose application stacks
+- Caddy reverse proxy with automatic HTTPS (Let’s Encrypt)
+- WireGuard network forwarding
 
-DevOps WordPress Showcase – Level 1
-Overview
-This project demonstrates a reproducible DevOps deployment of:
-- Proxmox VM
-- Docker Engine
-- Caddy reverse proxy (automatic TLS)
+This project evolves in structured maturity levels.
+
+---
+
+## Level 1 – Single VM Architecture
+
+Tag: `v1.0-level1`
+
+A complete WordPress stack deployed on a single VM:
+
+- Docker
 - WordPress + MariaDB
-Deployment is fully automated using Ansible.
+- Caddy reverse proxy
+- Basic host hardening (UFW, base packages)
 
-Architecture
-                    Internet
-                        |
-                        |
-                Public IP (VPS)
-                        |
-                    WireGuard
-                        |
-                    vm-prod
-                        |
-        ---------------------------------
-        | Docker Engine                |
-        |                               |
-        |  Caddy (Reverse Proxy + TLS)  |
-        |  WordPress                    |
-        |  MariaDB                      |
-        ---------------------------------
-Networking model
-    • YOURDOMAIN.tech points to the public IP of the VPS
-    • The VPS forwards traffic (80/443) through WireGuard
-    • vm-prod receives the traffic internally
-    • Caddy automatically provisions Let's Encrypt certificates
+Architecture:
+Internet → VPS Public IP → WireGuard Tunnel → VM → Caddy → WordPress
 
-Infrastructure
-Component
-Description
-Hypervisor
-Proxmox
-Control node
-vm-ansible
-Target node
-vm-prod
-OS
-Debian 12
-Reverse proxy
-Caddy v2
-Application
-WordPress
-Database
-MariaDB 11
-
-Deployment
-From vm-ansible:
+How to deploy:
 cd ansible
-ansible-playbook playbooks/level1.yml
-This playbook:
-1. Configures base system (timezone, firewall)
-2. Installs Docker
-3. Deploys Docker Compose stack
-4. Generates Caddy configuration
-5. Starts WordPress in HTTPS
+ansible-playbook -i inventory/production.ini playbooks/level1.yml
 
-Domain configuration
-DNS configuration:
-YOURDOMAIN.tech → Public IP (VPS)
-Ports required:
-- 80/tcp
-- 443/tcp
-Firewall rules on vm-prod allow:
-- SSH (22)
-- HTTP (80)
-- HTTPS (443)
+## Level 2 – Dedicated Proxy + Multiple Backends
 
-Services
-Caddy
-- Automatic HTTPS (Let's Encrypt)
-- HTTP → HTTPS redirection
-- Gzip enabled
-WordPress
-- Running in container
-- Persistent volume for:
- - /var/www/html
-MariaDB
-- Persistent volume
-- Credentials managed via environment file
+Tag: v2.0-level2
 
-Persistent data
-Docker volumes:
-- wp_data
-- db_data
-- caddy_data
-- caddy_config
-To inspect:
-docker volume ls
+A production-like split architecture:
 
-Operational commands
+    Proxy VM (Caddy entrypoint)
 
-Check containers
-docker ps
+    Dedicated WordPress backend VMs
 
-View logs
-docker logs caddy
-docker logs wordpress
-docker logs wp_db
+    Firewall segmentation (proxy → backend only)
 
-Restart stack
-cd /opt/devops-wp-showcase
-docker compose down
-docker compose up -d
+    Per-site logging & PHP tuning via Ansible
 
-Full reset (destroy data)
-docker compose down -v
+Architecture:
+Level 2 – Dedicated Proxy + Multiple Backends
+Internet
+   ↓
+VPS Public IP
+   ↓
+WireGuard
+   ↓
+Proxy VM (Caddy)
+   ↓
+WordPress Backend VM(s)
 
-## Known Limitations
+How to deploy
+cd ansible
+ansible-playbook -i inventory/production.ini playbooks/level2.yml
 
-While this Level 1 setup demonstrates a reproducible and secure containerized deployment, it intentionally remains simple.
+### Roadmap – Level 3
 
-Current limitations:
+Planned improvements:
 
-- Single VM architecture (proxy + application on same host)
-- No infrastructure-as-code for VM provisioning (manual Proxmox creation)
-- Secrets stored in Ansible variables (no Vault yet)
-- No centralized logging or monitoring
-- No automated backups
-- No CI/CD validation pipeline
-- Docker Compose used instead of orchestrator (e.g. Swarm/K8s)
+Ansible Vault for secrets
 
-This design is suitable for a small production workload or showcase environment, but not yet optimized for high availability or horizontal scalability.
+Automated backups + restore validation
 
-## Future Improvements
+CI pipeline (ansible-lint, yamllint)
 
-Planned evolution of this project:
+Monitoring stack (Prometheus/Grafana)
 
-### Level 2
-- Dedicated reverse proxy VM
-- Multiple WordPress backend nodes
-- Automated site provisioning via Ansible
-- Internal network isolation between proxy and backends
+Terraform provisioning for Proxmox
 
-### Level 3
-- Secrets management using Ansible Vault
-- Automated backups with restore testing
-- CI pipeline (ansible-lint, yamllint, docker validation)
-- Monitoring stack (Prometheus / Uptime Kuma)
-- Infrastructure provisioning via Terraform (Proxmox provider)
-- Log centralization
-- Staging vs Production inventory separation
+Centralized logging
 
-The goal is to progressively move from a reproducible deployment to a production-grade DevOps architecture.
+## Documentation
 
+Detailed technical documentation is available in the /docs directory:
+
+Architecture & Networking
+
+Ansible structure & roles
+
+Inventory & configuration model
+
+Operations & maintenance
+
+Security & hardening strategy
+
+Roadmap evolution
+
+## Objective
+
+This project demonstrates:
+
+Infrastructure evolution from simple to segmented architecture
+
+Idempotent automation with Ansible
+
+Network segmentation & security mindset
+
+Platform-oriented DevOps thinking
+
+It is designed as a technical showcase and learning platform.
