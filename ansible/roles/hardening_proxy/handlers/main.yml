@@ -5,5 +5,7 @@
 
 - name: restart caddy container
   ansible.builtin.command:
-    cmd: docker compose -f {{ project_dir }}/compose.yml restart caddy
+    cmd: docker compose restart caddy
+  args:
+    chdir: "{{ proxy_dir }}"
   changed_when: true
